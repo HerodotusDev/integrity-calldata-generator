@@ -207,12 +207,12 @@ impl StarkProof {
                 .collect::<Vec<BigUint>>(),
         })
     }
-    fn main_page(public_memory: &[PublicMemoryElement]) -> anyhow::Result<Vec<PubilcMemoryCell>> {
+    fn main_page(public_memory: &[PublicMemoryElement]) -> anyhow::Result<Vec<PublicMemoryCell>> {
         public_memory
             .iter()
             .filter(|m| m.page == 0)
             .map(|m| {
-                Ok(PubilcMemoryCell {
+                Ok(PublicMemoryCell {
                     address: m.address,
                     value: BigUint::from_str_hex(&m.value)
                         .ok_or(anyhow::anyhow!("Invalid memory value"))?,

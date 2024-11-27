@@ -1,10 +1,10 @@
 use super::types::{Commitment, Query, QueryWithDepth, Witness};
+use crate::table::decommit::{HASHER_248_LSB, HASHER_BLAKE2S};
 use alloc::vec::Vec;
 use blake2::Blake2s256;
-use sha3::{Keccak256, Digest};
+use sha3::{Digest, Keccak256};
 use starknet_core::types::NonZeroFelt;
 use starknet_crypto::{poseidon_hash, Felt};
-use crate::table::decommit::{HASHER_BLAKE2S, HASHER_248_LSB};
 
 pub fn vector_commitment_decommit(
     commitment: Commitment,
@@ -112,7 +112,7 @@ fn hash_friendly_unfriendly(x: Felt, y: Felt, is_verifier_friendly: bool) -> Fel
 
         unsafe {
             let hasher_bit = if HASHER_248_LSB { 1 } else { 12 };
-            
+
             if HASHER_BLAKE2S {
                 let mut hasher = Blake2s256::new();
                 hasher.update(&hash_data);

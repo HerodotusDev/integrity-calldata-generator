@@ -264,7 +264,7 @@ impl IntoAst for SegmentInfo {
     }
 }
 
-impl IntoAst for PubilcMemoryCell {
+impl IntoAst for PublicMemoryCell {
     fn into_ast(self) -> Vec<Expr> {
         let mut exprs = vec![];
         exprs.append(&mut self.address.into_ast());

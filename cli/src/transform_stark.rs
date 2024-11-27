@@ -145,7 +145,7 @@ impl TransformTo<SegmentInfoVerifier> for stark_proof::SegmentInfo {
     }
 }
 
-impl TransformTo<AddrValue> for stark_proof::PubilcMemoryCell {
+impl TransformTo<AddrValue> for stark_proof::PublicMemoryCell {
     fn transform_to(self) -> AddrValue {
         AddrValue { address: self.address.into(), value: self.value.into() }
     }

@@ -4,8 +4,8 @@ use sha3::{Digest, Keccak256};
 
 use serde::{Deserialize, Serialize};
 use starknet_crypto::Felt;
+use swiftness_commitment::table::decommit::HASHER_BLAKE2S;
 use swiftness_transcript::{assure, transcript::Transcript};
-use swiftness_commitment::table::decommit::{HASHER_BLAKE2S, HASHER_248_LSB};
 
 use crate::config::Config;
 

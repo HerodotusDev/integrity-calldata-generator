@@ -2,8 +2,8 @@ use alloc::vec::Vec;
 use starknet_core::types::NonZeroFelt;
 use starknet_crypto::Felt;
 
-use crate::layer::FriLayerQuery;
 use crate::fri::WITNESS;
+use crate::layer::FriLayerQuery;
 use std::format;
 
 // Verifies FRI last layer by evaluating the given polynomial on the given points
@@ -13,7 +13,11 @@ pub fn verify_last_layer(
     coefficients: Vec<Felt>,
 ) -> Result<(), Error> {
     unsafe {
-        WITNESS.push(format!("0x{:x} {}", coefficients.len(), coefficients.iter().map(|x| x.to_hex_string()).collect::<Vec<_>>().join(" ")));
+        WITNESS.push(format!(
+            "0x{:x} {}",
+            coefficients.len(),
+            coefficients.iter().map(|x| x.to_hex_string()).collect::<Vec<_>>().join(" ")
+        ));
     }
 
     for query in quries.iter_mut() {
