@@ -113,15 +113,18 @@ pub fn eval_oods_boundary_poly_at_points<Layout: LayoutTrait>(
                 [i * Layout::CONSTRAINT_DEGREE..(i + 1) * Layout::CONSTRAINT_DEGREE],
         );
 
-        evaluations.push(Layout::eval_oods_polynomial(
-            public_input,
-            &column_values,
-            &eval_info.oods_values,
-            &eval_info.constraint_coefficients,
-            &point,
-            &eval_info.oods_point,
-            &eval_info.trace_generator,
-        ).unwrap());
+        evaluations.push(
+            Layout::eval_oods_polynomial(
+                public_input,
+                &column_values,
+                &eval_info.oods_values,
+                &eval_info.constraint_coefficients,
+                &point,
+                &eval_info.oods_point,
+                &eval_info.trace_generator,
+            )
+            .unwrap(),
+        );
     }
 
     evaluations

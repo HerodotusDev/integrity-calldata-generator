@@ -1,5 +1,6 @@
 use alloc::{borrow::ToOwned, vec::Vec};
 use starknet_crypto::{poseidon_hash_many, Felt};
+use std::{format, string::String};
 use swiftness_commitment::table::{
     commit::table_commit,
     config::Config as TableCommitmentConfig,
@@ -7,7 +8,6 @@ use swiftness_commitment::table::{
     types::{Commitment as TableCommitment, Decommitment as TableDecommitment},
 };
 use swiftness_transcript::transcript::Transcript;
-use std::{format, string::String};
 
 use crate::{
     config::Config as FriConfig,
@@ -126,23 +126,34 @@ fn fri_verify_layers(
             eval_point: *eval_points.get(i).unwrap(),
         };
 
-        let queries_string = queries.iter().map(|q| format!(" 0x{:x} 0x{:x} 0x{:x}", q.index, q.y_value, q.x_inv_value)).collect::<Vec<_>>().join("");
+        let queries_string = queries
+            .iter()
+            .map(|q| format!(" 0x{:x} 0x{:x} 0x{:x}", q.index, q.y_value, q.x_inv_value))
+            .collect::<Vec<_>>()
+            .join("");
 
         let witness_leaves_string = target_layer_witness_leaves
             .iter()
             .map(|x| x.to_hex_string())
             .collect::<Vec<_>>()
             .join(" ");
-        let witness_table_string = target_layer_witness_table_withness.vector.authentications
+        let witness_table_string = target_layer_witness_table_withness
+            .vector
+            .authentications
             .iter()
             .map(|x| x.to_hex_string())
             .collect::<Vec<_>>()
             .join(" ");
         unsafe {
             VAR_STATE.push(format!("0x{:x} 0x{:x}{}", i, queries.len(), queries_string));
-            WITNESS.push(format!("0x{:x} {} 0x{:x} {}", target_layer_witness_leaves.len(), witness_leaves_string, target_layer_witness_table_withness.vector.authentications.len(), witness_table_string));
+            WITNESS.push(format!(
+                "0x{:x} {} 0x{:x} {}",
+                target_layer_witness_leaves.len(),
+                witness_leaves_string,
+                target_layer_witness_table_withness.vector.authentications.len(),
+                witness_table_string
+            ));
         }
-        
 
         // Compute next layer queries.
         let (next_queries, verify_indices, verify_y_values) =
@@ -158,7 +169,11 @@ fn fri_verify_layers(
 
         queries = next_queries;
     }
-    let queries_string = queries.iter().map(|q| format!(" 0x{:x} 0x{:x} 0x{:x}", q.index, q.y_value, q.x_inv_value)).collect::<Vec<_>>().join("");
+    let queries_string = queries
+        .iter()
+        .map(|q| format!(" 0x{:x} 0x{:x} 0x{:x}", q.index, q.y_value, q.x_inv_value))
+        .collect::<Vec<_>>()
+        .join("");
     unsafe {
         VAR_STATE.push(format!("0x{:x} 0x{:x}{}", len, queries.len(), queries_string));
     }
@@ -185,16 +200,20 @@ pub fn fri_verify(
 
     // Print constant state.
     unsafe {
-        CONST_STATE += format!("0x{:x} 0x{:x}", commitment.config.n_layers - 1, commitment.inner_layers.len()).as_str();
+        CONST_STATE +=
+            format!("0x{:x} 0x{:x}", commitment.config.n_layers - 1, commitment.inner_layers.len())
+                .as_str();
         commitment.inner_layers.iter().for_each(|c| {
-            CONST_STATE += format!(" 0x{:x} 0x{:x} 0x{:x} 0x{:x} 0x{:x} 0x{:x}",
+            CONST_STATE += format!(
+                " 0x{:x} 0x{:x} 0x{:x} 0x{:x} 0x{:x} 0x{:x}",
                 c.config.n_columns,
                 c.config.vector.height,
                 c.config.vector.n_verifier_friendly_commitment_layers,
                 c.vector_commitment.config.height,
                 c.vector_commitment.config.n_verifier_friendly_commitment_layers,
                 c.vector_commitment.commitment_hash,
-            ).as_str();
+            )
+            .as_str();
         });
         CONST_STATE += format!(" 0x{:x}", commitment.eval_points.len()).as_str();
         commitment.eval_points.iter().for_each(|e| {

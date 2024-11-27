@@ -147,13 +147,13 @@ pub struct PublicInput {
     pub padding_addr: u32,
     pub padding_value: BigUint,
     pub main_page_len: usize,
-    pub main_page: Vec<PubilcMemoryCell>,
+    pub main_page: Vec<PublicMemoryCell>,
     pub n_continuous_pages: usize,
     pub continuous_page_headers: Vec<BigUint>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct PubilcMemoryCell {
+pub struct PublicMemoryCell {
     pub address: u32,
     pub value: BigUint,
 }

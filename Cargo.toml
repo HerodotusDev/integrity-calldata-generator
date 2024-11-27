@@ -9,8 +9,7 @@ members = [
     "crates/commitment",
     "crates/fri",
     "crates/pow",
-    "crates/stark",
-    "crates/proof_serializer",
+    "crates/stark"
 ]
 exclude = [
     "cli",

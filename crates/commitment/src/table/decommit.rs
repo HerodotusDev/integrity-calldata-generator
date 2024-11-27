@@ -3,7 +3,7 @@ use crate::vector::{decommit::vector_commitment_decommit, types::Query};
 use alloc::vec::Vec;
 use blake2::Blake2s256;
 use num_bigint::{BigInt, TryFromBigIntError};
-use sha3::{Keccak256, Digest};
+use sha3::{Digest, Keccak256};
 use starknet_crypto::{poseidon_hash_many, Felt};
 
 const MONTGOMERY_R: Felt =
@@ -68,7 +68,7 @@ fn generate_vector_queries(
 
             unsafe {
                 let hasher_bit = if HASHER_248_LSB { 1 } else { 12 };
-                
+
                 if HASHER_BLAKE2S {
                     let mut hasher = Blake2s256::new();
                     hasher.update(&data);

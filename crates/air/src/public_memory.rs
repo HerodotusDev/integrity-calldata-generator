@@ -108,7 +108,12 @@ impl PublicInput {
                 hash_data.push(n_verifier_friendly_commitment_layers);
             }
         }
-        hash_data.extend([self.log_n_steps, self.range_check_min, self.range_check_max, self.layout]);
+        hash_data.extend([
+            self.log_n_steps,
+            self.range_check_min,
+            self.range_check_max,
+            self.layout,
+        ]);
 
         if let Some(dynamic_params) = &self.dynamic_params {
             let dynamic_params_vec: Vec<usize> = dynamic_params.clone().into();
